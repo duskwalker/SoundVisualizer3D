@@ -1,0 +1,43 @@
+﻿<controls:MetroWindow x:Class="SoundVisualizer3D.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SoundVisualizer3D"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="SoundVisualizer3D" Height="600" Width="1224">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="37"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ItemsControl Margin="0,0,0,5" Grid.Row="0" VerticalAlignment="Bottom" ItemsSource="{Binding FrequenciesValues}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Height="{Binding}" Width="5" Fill="CornflowerBlue" Margin="0,0,1,0" VerticalAlignment="Bottom"></Rectangle>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Grid Grid.Row="1"  Height="35">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListView Grid.Column="0" Height="30" Width="600" ItemsSource="{Binding Files}" 
+                      HorizontalAlignment="Left" Margin="5,1,5,1"
+                      SelectedItem="{Binding SelectedFile}">
+            </ListView>
+            <Button Grid.Column="1" Content="Play" Height="30" Width="100" Margin="1" Click="OnPlay_Clicked"></Button>
+            <Button Grid.Column="2" Content="Stop" Height="30" Width="100" Margin="1" Click="OnStop_Clicked"></Button>
+        </Grid>
+
+    </Grid>
+</controls:MetroWindow>
+
