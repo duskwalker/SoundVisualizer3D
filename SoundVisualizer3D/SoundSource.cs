@@ -23,8 +23,7 @@ namespace SoundVisualizer3D
         }
 
         public SoundSource(int frequencyScanInterval=1)
-        {
-            BassNet.Registration("maximfleitling@yahoo.de", "2X223152334323");
+        {            
             _deviceReady = Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
             _timer = new Timer(frequencyScanInterval);
             _timer.Elapsed += TimerOnElapsed;
