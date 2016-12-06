@@ -14,8 +14,20 @@ namespace SoundVisualizer3D
     {
         private readonly SoundSource _soundSource;
         private readonly string _currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        private int _currentPosition;
         public float[] FrequenciesValues { get; set; }
-       
+
+        public int CurrentPosition
+        {
+            get { return _currentPosition; }
+            set { _soundSource.CurrentPositionSeconds = value; }
+        }
+
+        public int TrackLength
+        {
+            get { return _soundSource.TrackLength; }
+        }
+
         public List<string> Files
         {
             get
@@ -24,7 +36,7 @@ namespace SoundVisualizer3D
             }
         }
 
-        public string SelectedFile { get; set; }    
+        public string SelectedFile { get; set; }
 
         public MainWindowViewModel()
         {
@@ -35,15 +47,29 @@ namespace SoundVisualizer3D
 
         private void SoundSourceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            FrequenciesValues = _soundSource.FrequenciesValues;
-            OnPropertyChanged(nameof(FrequenciesValues));
+            if (propertyChangedEventArgs.PropertyName.Equals("FrequenciesValues"))
+            {
+                FrequenciesValues = _soundSource.FrequenciesValues;
+                OnPropertyChanged(nameof(FrequenciesValues));
+            }
+
+            if (propertyChangedEventArgs.PropertyName.Equals("CurrentPositionSeconds"))
+            {
+                _currentPosition = _soundSource.CurrentPositionSeconds;
+                OnPropertyChanged(nameof(CurrentPosition));
+            }
+
+            if (propertyChangedEventArgs.PropertyName.Equals("TrackLength"))
+            {
+               OnPropertyChanged(nameof(TrackLength));
+            }
         }
 
         public void Play()
         {
             if (!string.IsNullOrEmpty(SelectedFile))
             {
-                _soundSource.Play(Path.Combine(_currentDirectory,"Audio",SelectedFile));
+                _soundSource.Play(Path.Combine(_currentDirectory, "Audio", SelectedFile));
             }
         }
 
@@ -54,7 +80,7 @@ namespace SoundVisualizer3D
 
         private List<string> GetAudioFiles()
         {
-            return Directory.GetFiles(Path.Combine(_currentDirectory, "Audio"),"*.mp3").Select(Path.GetFileName).ToList();
+            return Directory.GetFiles(Path.Combine(_currentDirectory, "Audio"), "*.mp3").Select(Path.GetFileName).ToList();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
