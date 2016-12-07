@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using SoundVisualizer3D.Annotations;
 using Un4seen.Bass;
 using System.Timers;
+using SoundVisualizer3D.Properties;
 
 namespace SoundVisualizer3D
 {
@@ -75,8 +75,7 @@ namespace SoundVisualizer3D
                 _timer.Stop();
             }
         }
-
-
+        
         private int GetTrackLength()
         {
             if (!_deviceReady || _handle == 0)
@@ -87,8 +86,7 @@ namespace SoundVisualizer3D
             long length = Bass.BASS_ChannelGetLength(_handle);
             return  (int)Bass.BASS_ChannelBytes2Seconds(_handle, length);
         }
-
-
+        
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             if (_deviceReady && _handle != 0)
@@ -100,8 +98,7 @@ namespace SoundVisualizer3D
                 OnPropertyChanged(nameof(CurrentPositionSeconds));
             }
         }
-
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -109,6 +106,7 @@ namespace SoundVisualizer3D
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public void Dispose()
         {
             _timer.Elapsed -= TimerOnElapsed;

@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using SoundVisualizer3D.Annotations;
+using System.Windows.Input;
+using SoundVisualizer3D.Properties;
+using SoundVisualizer3D.Utilities;
 
-namespace SoundVisualizer3D
+namespace SoundVisualizer3D.ViewModels
 {
     public class MainWindowViewModel
         : INotifyPropertyChanged
     {
-        private readonly SoundSource _soundSource;
-        private readonly string _currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         private int _currentPosition;
+
+        private readonly SoundSource _soundSource;
+
         public float[] FrequenciesValues { get; set; }
+
+        public ICommand OnPlayCommand { get; }
+        public ICommand OnStopCommand { get; }
 
         public int CurrentPosition
         {
@@ -42,7 +47,24 @@ namespace SoundVisualizer3D
         {
             _soundSource = new SoundSource();
             _soundSource.PropertyChanged += SoundSourceOnPropertyChanged;
+
+            OnPlayCommand = new DelegateCommand(Play);
+            OnStopCommand = new DelegateCommand(Stop);
+            
             FrequenciesValues = _soundSource.FrequenciesValues;
+        }
+
+        public void Play()
+        {
+            if (!string.IsNullOrEmpty(SelectedFile))
+            {
+                _soundSource.Play(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Audio", SelectedFile));
+            }
+        }
+
+        public void Stop()
+        {
+            _soundSource.Stop();
         }
 
         private void SoundSourceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -61,27 +83,21 @@ namespace SoundVisualizer3D
 
             if (propertyChangedEventArgs.PropertyName.Equals("TrackLength"))
             {
-               OnPropertyChanged(nameof(TrackLength));
+                OnPropertyChanged(nameof(TrackLength));
             }
-        }
-
-        public void Play()
-        {
-            if (!string.IsNullOrEmpty(SelectedFile))
-            {
-                _soundSource.Play(Path.Combine(_currentDirectory, "Audio", SelectedFile));
-            }
-        }
-
-        public void Stop()
-        {
-            _soundSource.Stop();
         }
 
         private List<string> GetAudioFiles()
         {
-            return Directory.GetFiles(Path.Combine(_currentDirectory, "Audio"), "*.mp3").Select(Path.GetFileName).ToList();
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Audio");
+            var files = Directory.GetFiles(path, "*.mp3");
+
+            return files
+                .Select(Path.GetFileName)
+                    .ToList();
         }
+
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -90,5 +106,7 @@ namespace SoundVisualizer3D
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
