@@ -81,8 +81,6 @@ namespace SoundVisualizer3D.Desktop.Visualization
             _basicEffect.View = View;
             _basicEffect.Projection = Projection;
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             foreach (EffectPass pass in _basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();

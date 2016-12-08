@@ -20,6 +20,7 @@ namespace SoundVisualizer3D.Desktop
             _graphics = new GraphicsDeviceManager(this);
 
             // Add Component
+            Components.Add(new TestVisualization(this));
             Components.Add(new WaveformVisualization(this, soundSource));
 
             Content.RootDirectory = "Content";
@@ -45,6 +46,8 @@ namespace SoundVisualizer3D.Desktop
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
             base.Draw(gameTime);
         }
 

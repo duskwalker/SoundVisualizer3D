@@ -137,7 +137,7 @@ namespace SoundVisualizer3D.Desktop.Visualization
             _basicEffect.View = _viewMatrix;
             _basicEffect.World = _worldMatrix;
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
             GraphicsDevice.SetVertexBuffer(_vertexBuffer);
 
             //Turn off culling so we see both sides of our rendered triangle
