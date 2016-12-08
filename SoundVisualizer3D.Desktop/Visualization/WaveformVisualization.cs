@@ -10,12 +10,13 @@ namespace SoundVisualizer3D.Desktop.Visualization
     {
         #region Fields
 
-        private const float Scale = 300.0f;
-        private const float Min = -1.0f;
-        private const float Max = 1.0f;
+        private const float Scale = 25.0f;
+        private const float Min = -10.0f;
+        private const float Max = 10.0f;
 
         private VertexPositionColor[] _vertices1;
         private VertexPositionColor[] _vertices2;
+
         private BasicEffect _basicEffect;
         private SoundSource _soundSource;
 
@@ -66,12 +67,12 @@ namespace SoundVisualizer3D.Desktop.Visualization
                 float fft = MathHelper.Clamp(_soundSource.FrequenciesValues[i], Min, Max) * Scale;
 
                 _vertices1[i].Position = new Vector3(currentX, centerHeight + fft, 0);
-                _vertices1[i].Color = Color.Blue;
+                _vertices1[i].Color = Color.WhiteSmoke;
 
-                float sfft = MathHelper.Clamp(_soundSource.FrequenciesValues[i], Min, Max) * Scale;
+                //float sfft = MathHelper.Clamp(_soundSource.FrequenciesValues[i], Min, Max) * Scale;
 
-                _vertices2[i].Position = new Vector3(currentX, centerHeight + sfft, 0);
-                _vertices2[i].Color = Color.Green;
+                //_vertices2[i].Position = new Vector3(currentX, centerHeight + sfft, 0);
+                //_vertices2[i].Color = Color.Green;
             }
 
             var View = Matrix.Identity;
@@ -80,11 +81,13 @@ namespace SoundVisualizer3D.Desktop.Visualization
             _basicEffect.View = View;
             _basicEffect.Projection = Projection;
 
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
             foreach (EffectPass pass in _basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices1, 0, _vertices1.Length - 1, VertexPositionColor.VertexDeclaration);
-                GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices2, 0, _vertices2.Length - 1, VertexPositionColor.VertexDeclaration);
+                //GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices2, 0, _vertices2.Length - 1, VertexPositionColor.VertexDeclaration);
             }
         }
 
