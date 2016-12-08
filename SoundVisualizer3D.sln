@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundVisualizer3D", "SoundVisualizer3D\SoundVisualizer3D.csproj", "{6A3F560A-0886-470F-B71D-89E0FE63BFCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundVisualizerTests", "SoundVisualizerTests\SoundVisualizerTests.csproj", "{7EF69F10-5F0D-4D67-B955-AEEA9E546C63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundVisualizer3D.Desktop", "SoundVisualizer3D.Desktop\SoundVisualizer3D.Desktop.csproj", "{DAF9BBAB-AE20-440E-8BEE-3D021082DB68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7EF69F10-5F0D-4D67-B955-AEEA9E546C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EF69F10-5F0D-4D67-B955-AEEA9E546C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EF69F10-5F0D-4D67-B955-AEEA9E546C63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF9BBAB-AE20-440E-8BEE-3D021082DB68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF9BBAB-AE20-440E-8BEE-3D021082DB68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF9BBAB-AE20-440E-8BEE-3D021082DB68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF9BBAB-AE20-440E-8BEE-3D021082DB68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
