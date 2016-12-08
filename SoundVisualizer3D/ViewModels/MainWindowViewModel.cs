@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Prism.Commands;
 using SoundVisualizer3D.Properties;
-using SoundVisualizer3D.Utilities;
 
 namespace SoundVisualizer3D.ViewModels
 {
