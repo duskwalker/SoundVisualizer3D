@@ -7,69 +7,78 @@ namespace SoundVisualizer3D.Desktop
     sealed class MonoGame
         : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        #region Fields
+
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
 
         //Camera
-        Vector3 camTarget;
-        Vector3 camPosition;
-        Matrix projectionMatrix;
-        Matrix viewMatrix;
-        Matrix worldMatrix;
+        private Vector3 _camTarget;
+        private Vector3 _camPosition;
+        private Matrix _projectionMatrix;
+        private Matrix _viewMatrix;
+        private Matrix _worldMatrix;
 
         //BasicEffect for rendering
-        BasicEffect basicEffect;
+        private BasicEffect _basicEffect;
 
         //Geometric info
-        VertexPositionColor[] triangleVertices;
-        VertexBuffer vertexBuffer;
-
+        private VertexPositionColor[] _triangleVertices;
+        private VertexBuffer _vertexBuffer;
+        
         //Orbit
-        bool orbit = false;
+        private bool _orbit = false;
 
-        public MonoGame()
+        private SoundSource _soundSource;
+
+        #endregion
+
+        public MonoGame(SoundSource soundSource)
         {
-            graphics = new GraphicsDeviceManager(this);
+            _soundSource = soundSource;
+            _graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
         }
+
+        #region Game Implementations
 
         protected override void Initialize()
         {
             base.Initialize();
 
             //Setup Camera
-            camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, 0f, -100f);
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), GraphicsDevice.DisplayMode.AspectRatio,
-                1f, 1000f);
-            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, new Vector3(0f, 1f, 0f)); // Y up
-            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+            _camTarget = new Vector3(0f, 0f, 0f);
+            _camPosition = new Vector3(0f, 0f, -100f);
+            _projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), GraphicsDevice.DisplayMode.AspectRatio, 1f, 1000f);
+            _viewMatrix = Matrix.CreateLookAt(_camPosition, _camTarget, new Vector3(0f, 1f, 0f)); // Y up
+            _worldMatrix = Matrix.CreateWorld(_camTarget, Vector3.Forward, Vector3.Up);
 
             //BasicEffect
-            basicEffect = new BasicEffect(GraphicsDevice);
-            basicEffect.Alpha = 1f;
+            _basicEffect = new BasicEffect(GraphicsDevice);
+            _basicEffect.Alpha = 1f;
 
             // Want to see the colors of the vertices, this needs to be on
-            basicEffect.VertexColorEnabled = true;
+            _basicEffect.VertexColorEnabled = true;
 
             //Lighting requires normal information which VertexPositionColor does not have
             //If you want to use lighting and VPC you need to create a custom def
-            basicEffect.LightingEnabled = false;
+            _basicEffect.LightingEnabled = false;
 
             //Geometry  - a simple triangle about the origin
-            triangleVertices = new VertexPositionColor[3];
-            triangleVertices[0] = new VertexPositionColor(new Vector3(0, 20, 0), Color.Red);
-            triangleVertices[1] = new VertexPositionColor(new Vector3(-20, -20, 0), Color.Green);
-            triangleVertices[2] = new VertexPositionColor(new Vector3(20, -20, 0), Color.Blue);
+            _triangleVertices = new VertexPositionColor[3];
+            _triangleVertices[0] = new VertexPositionColor(new Vector3(0, 20, 0), Color.Red);
+            _triangleVertices[1] = new VertexPositionColor(new Vector3(-20, -20, 0), Color.Green);
+            _triangleVertices[2] = new VertexPositionColor(new Vector3(20, -20, 0), Color.Blue);
 
             //Vert buffer
-            vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
-            vertexBuffer.SetData<VertexPositionColor>(triangleVertices);
+            _vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
+            _vertexBuffer.SetData<VertexPositionColor>(_triangleVertices);
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void UnloadContent()
@@ -87,68 +96,68 @@ namespace SoundVisualizer3D.Desktop
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                camPosition.X -= 1f;
-                camTarget.X -= 1f;
+                _camPosition.X -= 1f;
+                _camTarget.X -= 1f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                camPosition.X += 1f;
-                camTarget.X += 1f;
+                _camPosition.X += 1f;
+                _camTarget.X += 1f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                camPosition.Y -= 1f;
-                camTarget.Y -= 1f;
+                _camPosition.Y -= 1f;
+                _camTarget.Y -= 1f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                camPosition.Y += 1f;
-                camTarget.Y += 1f;
+                _camPosition.Y += 1f;
+                _camTarget.Y += 1f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
             {
-                camPosition.Z += 1f;
+                _camPosition.Z += 1f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.OemMinus))
             {
-                camPosition.Z -= 1f;
+                _camPosition.Z -= 1f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                orbit = !orbit;
+                _orbit = !_orbit;
             }
 
-            if (orbit)
+            if (_orbit)
             {
                 Matrix rotationMatrix = Matrix.CreateRotationY(MathHelper.ToRadians(1f));
-                camPosition = Vector3.Transform(camPosition, rotationMatrix);
+                _camPosition = Vector3.Transform(_camPosition, rotationMatrix);
             }
 
-            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up);
+            _viewMatrix = Matrix.CreateLookAt(_camPosition, _camTarget, Vector3.Up);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            basicEffect.Projection = projectionMatrix;
-            basicEffect.View = viewMatrix;
-            basicEffect.World = worldMatrix;
+            _basicEffect.Projection = _projectionMatrix;
+            _basicEffect.View = _viewMatrix;
+            _basicEffect.World = _worldMatrix;
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            GraphicsDevice.SetVertexBuffer(vertexBuffer);
+            GraphicsDevice.SetVertexBuffer(_vertexBuffer);
 
             //Turn off culling so we see both sides of our rendered triangle
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.None;
             GraphicsDevice.RasterizerState = rasterizerState;
 
-            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
+            foreach (EffectPass pass in _basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 3);
@@ -156,5 +165,7 @@ namespace SoundVisualizer3D.Desktop
 
             base.Draw(gameTime);
         }
+
+        #endregion
     }
 }

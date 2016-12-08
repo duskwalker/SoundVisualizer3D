@@ -1,13 +1,17 @@
-﻿
+﻿using Ninject;
+
 namespace SoundVisualizer3D.Desktop
 {
     class Program
     {
         static void Main()
         {
-            using (MonoGame monoGame = new MonoGame())
+            using (IKernel kernel = new StandardKernel(new MonoGameModule()))
             {
-                monoGame.Run();
+                using (MonoGame monoGame = kernel.Get<MonoGame>())
+                {
+                    monoGame.Run();
+                }
             }
         }
     }
