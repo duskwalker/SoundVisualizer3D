@@ -7,6 +7,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
     sealed class Arrow
         : ScreenObject
     {
+        #region Fields
+
         private BasicEffect _effect;
 
         private VertexPositionColor[] _axisArrow;
@@ -21,6 +23,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
         private Color _xColor;
         private Color _yColor;
         private Color _zColor;
+
+        #endregion
 
         public Arrow()
         {
@@ -48,39 +52,6 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
             {
                 VertexColorEnabled = true
             };
-        }
-
-        private void CreateAxisArrow()
-        {
-            _axisArrow = new VertexPositionColor[12];
-
-            // Axis Line:  
-            _axisArrow[0] = new VertexPositionColor(new Vector3(0, 0, 0), Color.White);
-            _axisArrow[1] = new VertexPositionColor(new Vector3(1, 0, 0), Color.White);
-
-            // Arrow on the tip of the Line:  
-            _axisArrow[2] = new VertexPositionColor(new Vector3(0.8f, 0, 0.1f), Color.White);
-            _axisArrow[3] = new VertexPositionColor(new Vector3(0.8f, 0.1f, 0), Color.White);
-            _axisArrow[4] = new VertexPositionColor(new Vector3(1, 0, 0), Color.White);
-            _axisArrow[5] = new VertexPositionColor(new Vector3(0.8f, -0.1f, 0), Color.White);
-            _axisArrow[6] = new VertexPositionColor(new Vector3(0.8f, 0, -0.1f), Color.White);
-            _axisArrow[7] = new VertexPositionColor(new Vector3(0.8f, 0.1f, 0), Color.White);
-            _axisArrow[8] = new VertexPositionColor(new Vector3(0.8f, -0.1f, 0), Color.White);
-            _axisArrow[9] = new VertexPositionColor(new Vector3(0.8f, 0, 0.1f), Color.White);
-            _axisArrow[10] = new VertexPositionColor(new Vector3(0.8f, 0, -0.1f), Color.White);
-            _axisArrow[11] = new VertexPositionColor(new Vector3(1, 0, 0), Color.White);
-        }
-
-        private void CreateAxis()
-        {
-            _axisMain = new VertexPositionColor[6];
-
-            _axisMain[0] = new VertexPositionColor(new Vector3(-_scale * _resolution, 0, 0), _xColor);
-            _axisMain[1] = new VertexPositionColor(new Vector3(_scale * _resolution, 0, 0), _xColor);
-            _axisMain[2] = new VertexPositionColor(new Vector3(0, -_scale * _resolution, 0), _yColor);
-            _axisMain[3] = new VertexPositionColor(new Vector3(0, _scale * _resolution, 0), _yColor);
-            _axisMain[4] = new VertexPositionColor(new Vector3(0, 0, -_scale * _resolution), _zColor);
-            _axisMain[5] = new VertexPositionColor(new Vector3(0, 0, _scale * _resolution), _zColor);
         }
 
         public override void Update()
@@ -128,6 +99,39 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
                 _effect.DiffuseColor = Color.White.ToVector3();
                 _effect.World = Matrix.Identity;
             }
+        }
+
+        private void CreateAxisArrow()
+        {
+            _axisArrow = new VertexPositionColor[12];
+
+            // Axis Line:  
+            _axisArrow[0] = new VertexPositionColor(new Vector3(0, 0, 0), Color.White);
+            _axisArrow[1] = new VertexPositionColor(new Vector3(1, 0, 0), Color.White);
+
+            // Arrow on the tip of the Line:  
+            _axisArrow[2] = new VertexPositionColor(new Vector3(0.8f, 0, 0.1f), Color.White);
+            _axisArrow[3] = new VertexPositionColor(new Vector3(0.8f, 0.1f, 0), Color.White);
+            _axisArrow[4] = new VertexPositionColor(new Vector3(1, 0, 0), Color.White);
+            _axisArrow[5] = new VertexPositionColor(new Vector3(0.8f, -0.1f, 0), Color.White);
+            _axisArrow[6] = new VertexPositionColor(new Vector3(0.8f, 0, -0.1f), Color.White);
+            _axisArrow[7] = new VertexPositionColor(new Vector3(0.8f, 0.1f, 0), Color.White);
+            _axisArrow[8] = new VertexPositionColor(new Vector3(0.8f, -0.1f, 0), Color.White);
+            _axisArrow[9] = new VertexPositionColor(new Vector3(0.8f, 0, 0.1f), Color.White);
+            _axisArrow[10] = new VertexPositionColor(new Vector3(0.8f, 0, -0.1f), Color.White);
+            _axisArrow[11] = new VertexPositionColor(new Vector3(1, 0, 0), Color.White);
+        }
+
+        private void CreateAxis()
+        {
+            _axisMain = new VertexPositionColor[6];
+
+            _axisMain[0] = new VertexPositionColor(new Vector3(-_scale * _resolution, 0, 0), _xColor);
+            _axisMain[1] = new VertexPositionColor(new Vector3(_scale * _resolution, 0, 0), _xColor);
+            _axisMain[2] = new VertexPositionColor(new Vector3(0, -_scale * _resolution, 0), _yColor);
+            _axisMain[3] = new VertexPositionColor(new Vector3(0, _scale * _resolution, 0), _yColor);
+            _axisMain[4] = new VertexPositionColor(new Vector3(0, 0, -_scale * _resolution), _zColor);
+            _axisMain[5] = new VertexPositionColor(new Vector3(0, 0, _scale * _resolution), _zColor);
         }
 
         private void DrawLineList(VertexPositionColor[] vertices)
