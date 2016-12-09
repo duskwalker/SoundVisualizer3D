@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 
-namespace SoundVisualizer3D.Desktop.Visualization
+namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 {
     sealed class WaveformVisualization
-        : DrawableGameComponent
+        : SceneObject
     {
         #region Fields
 
@@ -17,13 +17,12 @@ namespace SoundVisualizer3D.Desktop.Visualization
         private VertexPositionColor[] _vertices1;
         private VertexPositionColor[] _vertices2;
 
-        private BasicEffect _basicEffect;
+        private BasicEffect _effect;
         private SoundSource _soundSource;
 
         #endregion
 
-        public WaveformVisualization(Game game, SoundSource soundSource)
-            : base(game)
+        public WaveformVisualization(SoundSource soundSource)
         {
             _soundSource = soundSource;
         }
@@ -34,21 +33,22 @@ namespace SoundVisualizer3D.Desktop.Visualization
         {
             base.Initialize();
 
-            _basicEffect = new BasicEffect(GraphicsDevice);
-            _basicEffect.VertexColorEnabled = true;
-            _basicEffect.World = Matrix.Identity;
+            _effect = new BasicEffect(GraphicsDevice)
+            {
+                VertexColorEnabled = true
+            };
             
             string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\Kalimba.mp3");
             if(File.Exists(fileName))
             { 
-                _soundSource.Play(fileName);
+                _soundSource.Play(fileName, 50);
             }
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Render(ICamera camera)
         {
-            var height = Game.Window.ClientBounds.Height;
-            var width = Game.Window.ClientBounds.Width;
+            var height = GraphicsDevice.DisplayMode.Height;
+            var width = GraphicsDevice.DisplayMode.Width;
 
             int pointSamples = _soundSource.FrequenciesValues.Length;
             if (_vertices1 == null || _vertices2 == null)
@@ -75,13 +75,11 @@ namespace SoundVisualizer3D.Desktop.Visualization
                 //_vertices2[i].Color = Color.Green;
             }
 
-            var View = Matrix.Identity;
-            var Projection = Matrix.CreateOrthographicOffCenter(0, width, height, 0, -1.0f, 1.0f);
+            _effect.Projection = camera.Projection;
+            _effect.View = camera.View;
+            _effect.World = camera.World;
 
-            _basicEffect.View = View;
-            _basicEffect.Projection = Projection;
-
-            foreach (EffectPass pass in _basicEffect.CurrentTechnique.Passes)
+            foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices1, 0, _vertices1.Length - 1, VertexPositionColor.VertexDeclaration);

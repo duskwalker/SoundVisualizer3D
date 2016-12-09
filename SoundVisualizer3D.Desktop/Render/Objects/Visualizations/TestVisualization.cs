@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace SoundVisualizer3D.Desktop.Visualization
+namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 {
     sealed class TestVisualization
         : DrawableGameComponent

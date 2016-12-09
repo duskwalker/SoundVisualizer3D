@@ -70,11 +70,23 @@
     <Compile Include="MonoGameModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Visualization\TestVisualization.cs" />
-    <Compile Include="Visualization\WaveformVisualization.cs" />
+    <Compile Include="Render\Objects\Visualizations\TestVisualization.cs" />
+    <Compile Include="Render\Objects\Visualizations\WaveformVisualization.cs" />
+    <Compile Include="Render\IScene.cs" />
+    <Compile Include="Render\Objects\Camera.cs" />
+    <Compile Include="Render\Objects\ICamera.cs" />
+    <Compile Include="Render\Scene.cs" />
+    <Compile Include="Render\SceneObject.cs" />
+    <Compile Include="Render\ScreenAllocation.cs" />
+    <Compile Include="Render\ScreenObject.cs" />
+    <Compile Include="Render\Screen\Arrow.cs" />
+    <Compile Include="Render\Screen\Hud.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Content\DefaultFont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +95,7 @@
       <Name>SoundVisualizer3D</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
