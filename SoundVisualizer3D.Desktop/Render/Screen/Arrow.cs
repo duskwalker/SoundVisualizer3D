@@ -101,6 +101,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
             }
         }
 
+        #region Private Methods
+
         private void CreateAxisArrow()
         {
             _axisArrow = new VertexPositionColor[12];
@@ -151,5 +153,7 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, vertices, 0, vertices.Length - 1);
             }
         }
+
+        #endregion
     }
 }

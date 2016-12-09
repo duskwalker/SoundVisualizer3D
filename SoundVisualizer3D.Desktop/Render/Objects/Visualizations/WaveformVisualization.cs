@@ -41,7 +41,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\Kalimba.mp3");
             if(File.Exists(fileName))
             { 
-                _soundSource.Play(fileName, 50);
+                _soundSource.Play(fileName, 25);
             }
         }
 

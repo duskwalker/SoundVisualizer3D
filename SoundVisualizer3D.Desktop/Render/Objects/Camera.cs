@@ -66,6 +66,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
             }
         }
 
+        #region Private Methods
+
         private void UpdatePosition()
         {
             KeyboardState keyboardState = Keyboard.GetState();
@@ -138,5 +140,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
             // Set up the world matrix.
             World = Matrix.CreateWorld(Position, Vector3.Forward, Vector3.Up);
         }
+
+        #endregion
     }
 }

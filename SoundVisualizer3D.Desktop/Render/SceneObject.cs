@@ -84,11 +84,10 @@ namespace SoundVisualizer3D.Desktop.Render
         #region Virtuals
 
         public virtual void LoadContent() { }
+        public virtual void UnloadContent() { }
 
         public virtual void Initialize() { }
-
         public virtual void Update() { }
-
         public virtual void Render(ICamera camera) { }
 
         public virtual void OnChange() { }
