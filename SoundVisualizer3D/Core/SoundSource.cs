@@ -22,6 +22,22 @@ namespace SoundVisualizer3D
         public event FrequencesBandChangedEventHandler FrequencesBandChanged;
         public event TrackPositionProgrressChangedEventHandler TrackPositionProgressChanged;
 
+        //Provides track length in seconds
+        public int CurrentTrackLength { get; set; }
+
+        public int FrequencesBandWidth
+        {
+            get { return _frequenciesValues.Length; }
+        }
+
+        public float[] CurrentFrequencesBandValues
+        {
+            get
+            {
+                return _frequenciesValues;
+            }
+        }
+
         public SoundSource(int frequencyScanInterval = 1)
         {
             // here Registration for BASS.NET
@@ -49,9 +65,10 @@ namespace SoundVisualizer3D
             _handle = Bass.BASS_StreamCreateFile(fileName, 0, 0, BASSFlag.BASS_DEFAULT);
             if (_handle != 0)
             {
+                CurrentTrackLength = GetTrackLength();
                 OnTrackChanged(new TrackChangedEventHandlerArgs()
                 {
-                    TrackLength = GetTrackLength(),
+                    TrackLength = CurrentTrackLength,
                     Title = string.Join(" | ", Bass.BASS_ChannelGetTags(_handle, BASSTag.BASS_TAG_ID3))
                 });
                 Bass.BASS_ChannelSetAttribute(_handle, BASSAttribute.BASS_ATTRIB_VOL, vol / 100f);
