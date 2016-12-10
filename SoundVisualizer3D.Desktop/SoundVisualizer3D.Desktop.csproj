@@ -72,10 +72,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Render\Objects\Visualizations\TestVisualization.cs" />
     <Compile Include="Render\Objects\Visualizations\WaveformVisualization.cs" />
-    <Compile Include="Render\IScene.cs" />
     <Compile Include="Render\Objects\Camera.cs" />
     <Compile Include="Render\Objects\ICamera.cs" />
-    <Compile Include="Render\Scene.cs" />
     <Compile Include="Render\SceneObject.cs" />
     <Compile Include="Render\ScreenAllocation.cs" />
     <Compile Include="Render\ScreenObject.cs" />

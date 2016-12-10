@@ -7,35 +7,43 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
     sealed class Hud
         : ScreenObject
     {
+        #region Fields
+
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
+        private ICamera _camera;
 
-        public Hud()
-        {
-            Visible = true;
-        }
+        #endregion
 
-        public override void LoadContent()
+        public Hud(Game game)
+            : base(game) { }
+
+        #region DrawableGameComponent Implementations
+
+        protected override void LoadContent()
         {
-            _font = Content.Load<SpriteFont>("DefaultFont");
+            _font = Game.Content.Load<SpriteFont>("DefaultFont");
         }
 
         public override void Initialize()
         {
+            _camera = Game.Services.GetService<ICamera>();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ScreenAxisPosition = GetScreenPosition(new Vector2(10, 10), ScreenAllocation.TopLeft);
         }
 
-        public override void Render(ICamera camera)
+        public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(_font, string.Format("Camera: X:{0:00.00} Y:{1:00.00} Z:{2:00.00}", camera.Position.X, camera.Position.Y, camera.Position.Z), ScreenAxisPosition, Color.Black);
+            _spriteBatch.DrawString(_font, string.Format("Camera: X:{0:00.00} Y:{1:00.00} Z:{2:00.00}", _camera.Position.X, _camera.Position.Y, _camera.Position.Z), ScreenAxisPosition, Color.Black);
             
             _spriteBatch.DrawString(_font, "Controls: A,S,D,W - Movement (Left,Back,Right,Forward)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 50)), Color.Black);
             _spriteBatch.DrawString(_font, "Controls: Q,E - Movement (Up, Down)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 75)), Color.Black);
 
             _spriteBatch.End();
         }
+
+        #endregion
     }
 }

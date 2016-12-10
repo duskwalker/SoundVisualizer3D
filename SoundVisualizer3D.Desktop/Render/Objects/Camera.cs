@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Input;
 namespace SoundVisualizer3D.Desktop.Render.Objects
 {
     sealed class Camera
-            : SceneObject
-                , ICamera
+        : SceneObject
+            , ICamera
     {
         #region Fields
 
@@ -29,8 +29,6 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
         private const float _nearClip = 1.0f;
         private const float _farClip = 2000.0f;
 
-        private readonly Game _game;
-
         #endregion
 
         #region Properties
@@ -39,32 +37,25 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
         public Matrix View { get; private set; }
         public Matrix World { get; private set; }
 
-        public override bool Solid
-        {
-            get { return false; }
-        }
-        public override bool Visible
-        {
-            get { return false; }
-        }
-
         #endregion
 
         public Camera(Game game)
-        {
-            _game = game;
-        }
+            : base(game) { }
 
-        public void Update(GameTime gameTime)
+        #region DrawableGameComponent Implementations
+
+        public override void Update(GameTime gameTime)
         {
             UpdatePosition();
             UpdateCamera();
 
-            if (_game.IsActive)
+            if (Game.IsActive)
             {
-                Mouse.SetPosition(_game.Window.ClientBounds.X / 2, _game.Window.ClientBounds.Y / 2);
+                Mouse.SetPosition(Game.Window.ClientBounds.X / 2, Game.Window.ClientBounds.Y / 2);
             }
         }
+
+        #endregion
 
         #region Private Methods
 
@@ -135,7 +126,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
 
             // Set up the view matrix and projection matrix.
             View = Matrix.CreateLookAt(_cameraPosition, cameraLookat, Vector3.Up);
-            Projection = Matrix.CreatePerspectiveFieldOfView(_viewAngle, _game.GraphicsDevice.Viewport.AspectRatio, _nearClip, _farClip);
+            Projection = Matrix.CreatePerspectiveFieldOfView(_viewAngle, Game.GraphicsDevice.Viewport.AspectRatio, _nearClip, _farClip);
 
             // Set up the world matrix.
             World = Matrix.CreateWorld(Position, Vector3.Forward, Vector3.Up);

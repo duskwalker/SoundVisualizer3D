@@ -23,16 +23,19 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
         private Color _xColor;
         private Color _yColor;
         private Color _zColor;
+        private ICamera _camera;
 
         #endregion
 
-        public Arrow()
-        {
-            Visible = true;
-        }
+        public Arrow(Game game)
+            : base(game) { }
+
+        #region DrawableGameComponent Implementations
 
         public override void Initialize()
         {
+            _camera = Game.Services.GetService<ICamera>();
+
             _screenAxis = true;
             _mainAxis = true;
 
@@ -54,17 +57,17 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
             };
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             //CreateAxis();
             //CreateAxisArrow();
         }
 
-        public override void Render(ICamera camera)
+        public override void Draw(GameTime gameTime)
         {
-            _effect.Projection = camera.Projection;
-            _effect.View = camera.View;
-            _effect.World = camera.World;
+            _effect.Projection = _camera.Projection;
+            _effect.View = _camera.View;
+            _effect.World = _camera.World;
 
             if (_mainAxis)
             {
@@ -73,8 +76,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
 
             if (_screenAxis)
             {
-                Vector3 near = GraphicsDevice.Viewport.Unproject(new Vector3(ScreenAxisPosition, 0), camera.Projection, camera.View, Matrix.Identity);
-                Vector3 far = GraphicsDevice.Viewport.Unproject(new Vector3(ScreenAxisPosition, 1), camera.Projection, camera.View, Matrix.Identity);
+                Vector3 near = GraphicsDevice.Viewport.Unproject(new Vector3(ScreenAxisPosition, 0), _camera.Projection, _camera.View, Matrix.Identity);
+                Vector3 far = GraphicsDevice.Viewport.Unproject(new Vector3(ScreenAxisPosition, 1), _camera.Projection, _camera.View, Matrix.Identity);
 
                 Vector3 direction = far - near;
                 direction.Normalize();
@@ -100,6 +103,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
                 _effect.World = Matrix.Identity;
             }
         }
+
+        #endregion
 
         #region Private Methods
 

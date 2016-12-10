@@ -6,7 +6,7 @@ using System.IO;
 namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 {
     sealed class WaveformVisualization
-        : SceneObject
+        : DrawableGameComponent
     {
         #region Fields
 
@@ -19,19 +19,21 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 
         private BasicEffect _effect;
         private SoundSource _soundSource;
+        private ICamera _camera;
 
         #endregion
 
-        public WaveformVisualization(SoundSource soundSource)
-        {
-            _soundSource = soundSource;
-        }
+        public WaveformVisualization(Game game)
+            : base(game) { }
 
-        #region Overrides
+        #region DrawableGameComponent Implementations
 
         public override void Initialize()
         {
             base.Initialize();
+
+            _camera = Game.Services.GetService<ICamera>();
+            _soundSource = Game.Services.GetService<SoundSource>();
 
             _effect = new BasicEffect(GraphicsDevice)
             {
@@ -45,8 +47,9 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             }
         }
 
-        public override void Render(ICamera camera)
+        public override void Draw(GameTime gameTime)
         {
+            /*
             var height = GraphicsDevice.DisplayMode.Height;
             var width = GraphicsDevice.DisplayMode.Width;
 
@@ -85,6 +88,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices1, 0, _vertices1.Length - 1, VertexPositionColor.VertexDeclaration);
                 //GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices2, 0, _vertices2.Length - 1, VertexPositionColor.VertexDeclaration);
             }
+            */
         }
 
         #endregion

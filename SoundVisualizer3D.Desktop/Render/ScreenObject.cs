@@ -40,6 +40,9 @@ namespace SoundVisualizer3D.Desktop.Render
 
         #endregion
 
+        public ScreenObject(Game game)
+            : base(game) { }
+
         protected Vector2 GetScreenPosition(Vector2 offset, ScreenAllocation allocation)
         {
             Vector2 result = Vector2.Zero;
