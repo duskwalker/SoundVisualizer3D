@@ -38,8 +38,6 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 
         public override void Initialize()
         {
-            base.Initialize();
-
             _camera = Game.Services.GetService<ICamera>();
 
             //Setup Camera
@@ -69,16 +67,20 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             //Vert buffer
             _vertexBuffer = new VertexBuffer(Game.GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
             _vertexBuffer.SetData<VertexPositionColor>(_triangleVertices);
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+
+            base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-
+            base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -152,6 +154,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
                 pass.Apply();
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 3);
             }
+
+            base.Draw(gameTime);
         }
 
         #endregion

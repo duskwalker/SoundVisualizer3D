@@ -23,6 +23,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
         protected override void LoadContent()
         {
             _font = Game.Content.Load<SpriteFont>("DefaultFont");
+
+            base.LoadContent();
         }
 
         public override void Initialize()
@@ -31,10 +33,12 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ScreenAxisPosition = GetScreenPosition(new Vector2(10, 10), ScreenAllocation.TopLeft);
+
+            base.Initialize();
         }
 
         public override void Draw(GameTime gameTime)
-        {
+        {            
             _spriteBatch.Begin();
             _spriteBatch.DrawString(_font, string.Format("Camera: X:{0:00.00} Y:{1:00.00} Z:{2:00.00}", _camera.Position.X, _camera.Position.Y, _camera.Position.Z), ScreenAxisPosition, Color.Black);
             
@@ -42,6 +46,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
             _spriteBatch.DrawString(_font, "Controls: Q,E - Movement (Up, Down)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 75)), Color.Black);
 
             _spriteBatch.End();
+
+            base.Draw(gameTime);
         }
 
         #endregion

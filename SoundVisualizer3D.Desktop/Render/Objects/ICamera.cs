@@ -3,6 +3,7 @@
 namespace SoundVisualizer3D.Desktop.Render.Objects
 {
     interface ICamera
+        : IGameComponent
     {
         Matrix Projection { get; }
         Matrix View { get; }

@@ -14,6 +14,7 @@ namespace SoundVisualizer3D.Desktop
 
         private SoundSource _soundSource;
         private GraphicsDeviceManager _graphics;
+        private ICamera _camera;
 
         #endregion
 
@@ -25,6 +26,10 @@ namespace SoundVisualizer3D.Desktop
                 IsFullScreen = false
             };
 
+            _camera = new Camera(this);
+            Services.AddService<ICamera>(_camera);
+
+            Components.Add(_camera);
             Components.Add(new Arrow(this));
             Components.Add(new Hud(this));
 
@@ -35,8 +40,6 @@ namespace SoundVisualizer3D.Desktop
 
         protected override void Initialize()
         {
-            Services.AddService<ICamera>(new Camera(this));
-
             base.Initialize();
         }
 

@@ -30,8 +30,6 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 
         public override void Initialize()
         {
-            base.Initialize();
-
             _camera = Game.Services.GetService<ICamera>();
             _soundSource = Game.Services.GetService<SoundSource>();
 
@@ -45,6 +43,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             { 
                 _soundSource.Play(fileName, 25);
             }
+
+            base.Initialize();
         }
 
         public override void Draw(GameTime gameTime)
@@ -89,6 +89,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
                 //GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip, _vertices2, 0, _vertices2.Length - 1, VertexPositionColor.VertexDeclaration);
             }
             */
+
+            base.Draw(gameTime);
         }
 
         #endregion

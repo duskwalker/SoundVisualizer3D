@@ -55,12 +55,16 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
             {
                 VertexColorEnabled = true
             };
+
+            base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
             //CreateAxis();
             //CreateAxisArrow();
+
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -102,6 +106,8 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
                 _effect.DiffuseColor = Color.White.ToVector3();
                 _effect.World = Matrix.Identity;
             }
+
+            base.Draw(gameTime);
         }
 
         #endregion

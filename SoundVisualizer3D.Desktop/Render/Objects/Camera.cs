@@ -53,6 +53,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
             {
                 Mouse.SetPosition(Game.Window.ClientBounds.X / 2, Game.Window.ClientBounds.Y / 2);
             }
+
+            base.Update(gameTime);
         }
 
         #endregion
