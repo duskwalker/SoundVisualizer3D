@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects
+namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
 {
     sealed class Camera
         : SceneObject
@@ -40,7 +40,10 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
         #endregion
 
         public Camera(Game game)
-            : base(game) { }
+            : base(game)
+        {
+            Game.Services.AddService<ICamera>(this);
+        }
 
         #region DrawableGameComponent Implementations
 

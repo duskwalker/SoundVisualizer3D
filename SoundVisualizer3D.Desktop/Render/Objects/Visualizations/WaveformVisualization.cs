@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
 using System;
 using System.IO;
 

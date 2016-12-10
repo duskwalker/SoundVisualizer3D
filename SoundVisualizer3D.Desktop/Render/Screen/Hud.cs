@@ -1,6 +1,7 @@
 ﻿using SoundVisualizer3D.Desktop.Render.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
 
 namespace SoundVisualizer3D.Desktop.Render.Screen
 {
@@ -40,10 +41,10 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
         public override void Draw(GameTime gameTime)
         {            
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(_font, string.Format("Camera: X:{0:00.00} Y:{1:00.00} Z:{2:00.00}", _camera.Position.X, _camera.Position.Y, _camera.Position.Z), ScreenAxisPosition, Color.Black);
+            _spriteBatch.DrawString(_font, string.Format("Camera: X:{0:00.00} Y:{1:00.00} Z:{2:00.00}", _camera.Position.X, _camera.Position.Y, _camera.Position.Z), ScreenAxisPosition, Color.WhiteSmoke);
             
-            _spriteBatch.DrawString(_font, "Controls: A,S,D,W - Movement (Left,Back,Right,Forward)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 50)), Color.Black);
-            _spriteBatch.DrawString(_font, "Controls: Q,E - Movement (Up, Down)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 75)), Color.Black);
+            _spriteBatch.DrawString(_font, "Controls: A,S,D,W - Movement (Left, Back, Right, Forward)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 50)), Color.WhiteSmoke);
+            _spriteBatch.DrawString(_font, "Controls: Q,E - Movement (Up, Down)", Vector2.Add(ScreenAxisPosition, new Vector2(0, 75)), Color.WhiteSmoke);
 
             _spriteBatch.End();
 

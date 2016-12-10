@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects
+namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
 {
     interface ICamera
         : IGameComponent
@@ -10,7 +10,5 @@ namespace SoundVisualizer3D.Desktop.Render.Objects
         Matrix World { get; }
 
         Vector3 Position { get; }
-
-        void Update(GameTime gameTime);
     }
 }
