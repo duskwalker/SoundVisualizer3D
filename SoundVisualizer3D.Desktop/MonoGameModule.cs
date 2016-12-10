@@ -1,4 +1,5 @@
 ﻿using Ninject.Modules;
+using SoundVisualizer3D.Desktop.Render;
 
 namespace SoundVisualizer3D.Desktop
 {
