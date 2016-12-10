@@ -38,7 +38,7 @@ namespace SoundVisualizer3D.Desktop
             _scene = new Scene(this);
 
             
-            //_scene.AddObject(new WaveformVisualization(_soundSource));
+            _scene.AddObject(new WaveformVisualization(_soundSource));
             _scene.AddObject(new Arrow());
             _scene.AddObject(new Hud());
             

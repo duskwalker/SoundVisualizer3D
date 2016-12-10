@@ -50,7 +50,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             var height = GraphicsDevice.DisplayMode.Height;
             var width = GraphicsDevice.DisplayMode.Width;
 
-            int pointSamples = _soundSource.FrequenciesValues.Length;
+            int pointSamples = _soundSource.FrequencesBandWidth;
             if (_vertices1 == null || _vertices2 == null)
             {
                 _vertices1 = new VertexPositionColor[pointSamples];
@@ -64,7 +64,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             {
                 float currentX = sampleWidth * i;
 
-                float fft = MathHelper.Clamp(_soundSource.FrequenciesValues[i], Min, Max) * Scale;
+                float fft = MathHelper.Clamp(_soundSource.CurrentFrequencesBandValues[i], Min, Max) * Scale;
 
                 _vertices1[i].Position = new Vector3(currentX, centerHeight + fft, 0);
                 _vertices1[i].Color = Color.WhiteSmoke;
