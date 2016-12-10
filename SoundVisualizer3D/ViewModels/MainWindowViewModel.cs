@@ -14,23 +14,17 @@ namespace SoundVisualizer3D.ViewModels
         : INotifyPropertyChanged
     {
         private int _currentPosition;
-
         private readonly SoundSource _soundSource;
 
         public float[] FrequenciesValues { get; set; }
-
         public ICommand OnPlayCommand { get; }
         public ICommand OnStopCommand { get; }
+        public int TrackLength { get; set; }
 
         public int CurrentPosition
         {
             get { return _currentPosition; }
-            set { _soundSource.CurrentPositionSeconds = value; }
-        }
-
-        public int TrackLength
-        {
-            get { return _soundSource.TrackLength; }
+            set { _soundSource.SetPosition(value); }
         }
 
         public List<string> Files
@@ -46,12 +40,30 @@ namespace SoundVisualizer3D.ViewModels
         public MainWindowViewModel()
         {
             _soundSource = new SoundSource();
-            _soundSource.PropertyChanged += SoundSourceOnPropertyChanged;
+           _soundSource.TrackPositionProgressChanged += SoundSourceOnTrackPositionProgressChanged;
+            _soundSource.TrackChanged += SoundSourceOnTrackChanged;
+            _soundSource.FrequencesBandChanged += SoundSourceOnFrequencesBandChanged;
 
             OnPlayCommand = new DelegateCommand(Play);
-            OnStopCommand = new DelegateCommand(Stop);
-            
-            FrequenciesValues = _soundSource.FrequenciesValues;
+            OnStopCommand = new DelegateCommand(Stop);           
+        }
+
+        private void SoundSourceOnTrackPositionProgressChanged(object sender, TrackPositionProgrressChangedEventHandlerArgs args)
+        {
+            _currentPosition = args.PositionSeconds;
+            OnPropertyChanged(nameof(CurrentPosition));
+        }
+
+        private void SoundSourceOnFrequencesBandChanged(object sender, FrequencesBandChangedEventHandlerArgs args)
+        {
+            FrequenciesValues = args.FrequencesBand;
+            OnPropertyChanged(nameof(FrequenciesValues));
+        }
+
+        private void SoundSourceOnTrackChanged(object sender, TrackChangedEventHandlerArgs args)
+        {
+            TrackLength = args.TrackLength;
+            OnPropertyChanged(nameof(TrackLength));
         }
 
         public void Play()
@@ -67,30 +79,10 @@ namespace SoundVisualizer3D.ViewModels
             _soundSource.Stop();
         }
 
-        private void SoundSourceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+       private List<string> GetAudioFiles()
         {
-            if (propertyChangedEventArgs.PropertyName.Equals("FrequenciesValues"))
-            {
-                FrequenciesValues = _soundSource.FrequenciesValues;
-                OnPropertyChanged(nameof(FrequenciesValues));
-            }
-
-            if (propertyChangedEventArgs.PropertyName.Equals("CurrentPositionSeconds"))
-            {
-                _currentPosition = _soundSource.CurrentPositionSeconds;
-                OnPropertyChanged(nameof(CurrentPosition));
-            }
-
-            if (propertyChangedEventArgs.PropertyName.Equals("TrackLength"))
-            {
-                OnPropertyChanged(nameof(TrackLength));
-            }
-        }
-
-        private List<string> GetAudioFiles()
-        {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Audio");
-            var files = Directory.GetFiles(path, "*.mp3");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Audio");
+            string[] files = Directory.GetFiles(path, "*.mp3");
 
             return files
                 .Select(Path.GetFileName)

@@ -38,7 +38,7 @@ namespace SoundVisualizer3D.Desktop.Visualization
             _basicEffect.VertexColorEnabled = true;
             _basicEffect.World = Matrix.Identity;
             
-            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\Kalimba.mp3");
+            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\01. Alan Walker - Faded.mp3");
             if(File.Exists(fileName))
             { 
                 _soundSource.Play(fileName);

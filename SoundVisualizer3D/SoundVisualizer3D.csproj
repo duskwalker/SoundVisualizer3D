@@ -75,9 +75,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\FrequencesBandChangedEventHandlerArgs.cs" />
+    <Compile Include="Core\TrackChangedEventHandlerArgs.cs" />
+    <Compile Include="Core\TrackPositionProgrressChangedEventHandlerArgs.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="SoundSource.cs" />
+    <Compile Include="Core\SoundSource.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

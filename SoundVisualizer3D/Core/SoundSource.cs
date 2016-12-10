@@ -1,16 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Un4seen.Bass;
 using System.Timers;
-using SoundVisualizer3D.Properties;
 
 namespace SoundVisualizer3D
 {
+    public delegate void TrackChangedEventHandler(object sender, TrackChangedEventHandlerArgs args);
+    public delegate void FrequencesBandChangedEventHandler(object sender, FrequencesBandChangedEventHandlerArgs args);
+    public delegate void TrackPositionProgrressChangedEventHandler(object sender, TrackPositionProgrressChangedEventHandlerArgs args);
+
     public class SoundSource
-        : INotifyPropertyChanged
-        , IDisposable
+        : IDisposable
     {
         private readonly bool _deviceReady;
         private int _handle;
@@ -18,30 +18,19 @@ namespace SoundVisualizer3D
         private readonly Timer _timer;
         private int _currentPosition;
 
-        public float[] FrequenciesValues
-        {
-            get { return _frequenciesValues.Select(f => f * 1000).ToArray(); }
-        }
-
-        public int CurrentPositionSeconds
-        {
-            get { return _currentPosition; }
-            set { SetPosition(value); }
-        }
-
-        public int TrackLength
-        {
-            get { return GetTrackLength(); }
-        }
-
+        public event TrackChangedEventHandler TrackChanged;
+        public event FrequencesBandChangedEventHandler FrequencesBandChanged;
+        public event TrackPositionProgrressChangedEventHandler TrackPositionProgressChanged;
 
         public SoundSource(int frequencyScanInterval = 1)
         {
+            // here Registration for BASS.NET
+          
             _deviceReady = Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
             _timer = new Timer(frequencyScanInterval);
             _timer.Elapsed += TimerOnElapsed;
         }
-        
+
         public void SetPosition(int seconds)
         {
             if (_deviceReady && _handle != 0 && GetTrackLength() >= seconds)
@@ -60,7 +49,11 @@ namespace SoundVisualizer3D
             _handle = Bass.BASS_StreamCreateFile(fileName, 0, 0, BASSFlag.BASS_DEFAULT);
             if (_handle != 0)
             {
-                OnPropertyChanged(nameof(TrackLength));
+                OnTrackChanged(new TrackChangedEventHandlerArgs()
+                {
+                    TrackLength = GetTrackLength(),
+                    Title = string.Join(" | ", Bass.BASS_ChannelGetTags(_handle, BASSTag.BASS_TAG_ID3))
+                });
                 Bass.BASS_ChannelSetAttribute(_handle, BASSAttribute.BASS_ATTRIB_VOL, vol / 100f);
                 Bass.BASS_ChannelPlay(_handle, false);
                 _timer.Start();
@@ -75,7 +68,7 @@ namespace SoundVisualizer3D
                 _timer.Stop();
             }
         }
-        
+
         private int GetTrackLength()
         {
             if (!_deviceReady || _handle == 0)
@@ -84,32 +77,50 @@ namespace SoundVisualizer3D
             }
 
             long length = Bass.BASS_ChannelGetLength(_handle);
-            return  (int)Bass.BASS_ChannelBytes2Seconds(_handle, length);
+            return (int)Bass.BASS_ChannelBytes2Seconds(_handle, length);
         }
-        
+
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             if (_deviceReady && _handle != 0)
             {
                 Bass.BASS_ChannelGetData(_handle, _frequenciesValues, (int)BASSData.BASS_DATA_FFT512);
-                OnPropertyChanged(nameof(FrequenciesValues));
+                OnFrequencesBandChanged(new FrequencesBandChangedEventHandlerArgs
+                { FrequencesBand = _frequenciesValues.Select(f => f * 1000).ToArray() });
+
                 long bytePosition = Bass.BASS_ChannelGetPosition(_handle);
-                _currentPosition = (int)Bass.BASS_ChannelBytes2Seconds(_handle, bytePosition);
-                OnPropertyChanged(nameof(CurrentPositionSeconds));
+               
+                int position = (int)Bass.BASS_ChannelBytes2Seconds(_handle, bytePosition);
+                if (_currentPosition < position)
+                {
+                    _currentPosition = position;
+                    OnTrackPositionProgressChanged(new TrackPositionProgrressChangedEventHandlerArgs()
+                    {
+                        PositionSeconds = _currentPosition
+                    });
+                }
             }
         }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnTrackChanged(TrackChangedEventHandlerArgs args)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            TrackChanged?.Invoke(this, args);
+        }
+
+        protected virtual void OnFrequencesBandChanged(FrequencesBandChangedEventHandlerArgs args)
+        {
+            FrequencesBandChanged?.Invoke(this, args);
+        }
+
+        protected virtual void OnTrackPositionProgressChanged(TrackPositionProgrressChangedEventHandlerArgs args)
+        {
+            TrackPositionProgressChanged?.Invoke(this, args);
         }
 
         public void Dispose()
         {
             _timer.Elapsed -= TimerOnElapsed;
+            Bass.BASS_Free();
         }
     }
 }
