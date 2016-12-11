@@ -3,7 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
 using System.Collections.Generic;
 using SoundVisualizer3D.Desktop.Utils;
-using System.Linq;
+using System.IO;
+using System;
 
 namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 {
@@ -12,9 +13,9 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
     {
         #region Fields
 
-        //private BasicEffect _effect;
         private ICamera _camera;
-        private BlockModel[] _models;
+        private ISet<BlockModel> _models;
+        private SoundSource _soundSource;
 
         #endregion
 
@@ -26,32 +27,29 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
         public override void Initialize()
         {
             _camera = Game.Services.GetService<ICamera>();
+            _soundSource = Game.Services.GetService<SoundSource>();
 
-            /*_effect = new BasicEffect(GraphicsDevice)
+            var models = new HashSet<BlockModel>();
+            for (int ident = 0; ident < _soundSource.CurrentFrequencesBandValues.Length; ident++)
             {
-                VertexColorEnabled = true
-            };*/
+                Vector3 origin = Vector3.Add(Vector3.Zero, new Vector3(ident * 5, 0, 0));
+                BlockModel model = new BlockModel(Game, ident, origin);
 
-            var models = new List<BlockModel>();
-            for (int i = 0; i < 5; i++)
-            {
-                Vector3 origin = Vector3.Add(Vector3.Zero, new Vector3(i * 5, 0, 0));
-                BlockModel model = new BlockModel(Game, origin);
-
-                model.Initialize();
                 models.Add(model);
             }
-            _models = models.ToArray();
+            _models = models;
+
+            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\Kalimba.mp3");
+            if (File.Exists(fileName))
+            {
+                _soundSource.Play(fileName, 50);
+            }
 
             base.Initialize();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            //_effect.Projection = _camera.Projection;
-            //_effect.View = _camera.View;
-            //_effect.World = _camera.World;
-
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
             rasterizerState.FillMode = FillMode.Solid;
@@ -64,7 +62,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             {
                 model.Effect.Projection = _camera.Projection;
                 model.Effect.View = _camera.View;
-                model.Effect.World = _camera.World;
+                model.Effect.World = model.GetWorld();
 
                 model.Draw(gameTime);
             }
@@ -77,6 +75,14 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 
     sealed class BlockModel
     {
+        #region Consts
+
+        private const float Scale = 50.0f;
+        private const float Min = -10.0f;
+        private const float Max = 10.0f;
+
+        #endregion
+
         #region Fields
 
         private VertexPositionColor[] _vertices;
@@ -85,24 +91,27 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
         private BasicEffect _effect;
         private Game _game;
         private ICamera _camera;
+        private SoundSource _soundSource;
+        private int _ident;
 
         #endregion
 
         #region Properties
 
         public BasicEffect Effect { get { return _effect; } }
+        public Vector3 Position { get { return _origin; } }
 
         #endregion
 
-        public BlockModel(Game game, Vector3 origin)
+        public BlockModel(Game game, int ident, Vector3 origin)
         {
             _game = game;
+            _ident = ident;
             _origin = origin;
-        }
 
-        public void Initialize()
-        {
             _camera = _game.Services.GetService<ICamera>();
+            _soundSource = _game.Services.GetService<SoundSource>();
+
             _vertices = CreateCube(_origin);
 
             _effect = new BasicEffect(_game.GraphicsDevice)
@@ -118,6 +127,13 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
                 pass.Apply();
                 _game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length / 3);
             }
+        }
+
+        public Matrix GetWorld()
+        {
+            float fft = MathHelper.Clamp(_soundSource.CurrentFrequencesBandValues[_ident], Min, Max) * Scale;
+
+            return Matrix.CreateScale(1f, fft, 1f) * _camera.World;
         }
 
         #region Private Methods

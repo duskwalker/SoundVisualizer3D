@@ -11,15 +11,13 @@ namespace SoundVisualizer3D.Desktop
         : Game
     {
         #region Fields
-
-        private SoundSource _soundSource;
+        
         private GraphicsDeviceManager _graphics;
 
         #endregion
 
         public MonoGame(SoundSource soundSource)
         {
-            _soundSource = soundSource;
             _graphics = new GraphicsDeviceManager(this)
             {
                 IsFullScreen = false
@@ -29,6 +27,8 @@ namespace SoundVisualizer3D.Desktop
             Components.Add(new Camera(this));
             Components.Add(new Arrow(this));
             Components.Add(new Hud(this));
+
+            Services.AddService(soundSource);
 
             Content.RootDirectory = "Content";
         }
