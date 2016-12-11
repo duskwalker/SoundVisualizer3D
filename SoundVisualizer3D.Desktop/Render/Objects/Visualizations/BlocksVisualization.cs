@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
 using System.Collections.Generic;
 using SoundVisualizer3D.Desktop.Utils;
+using System.Linq;
 
 namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 {
@@ -12,9 +12,9 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
     {
         #region Fields
 
-        private VertexPositionColor[] _vertices;
-        private BasicEffect _effect;
+        //private BasicEffect _effect;
         private ICamera _camera;
+        private BlockModel[] _models;
 
         #endregion
 
@@ -27,27 +27,30 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
         {
             _camera = Game.Services.GetService<ICamera>();
 
-            _effect = new BasicEffect(GraphicsDevice)
+            /*_effect = new BasicEffect(GraphicsDevice)
             {
                 VertexColorEnabled = true
-            };
+            };*/
 
-            var vertices = new List<VertexPositionColor>();
+            var models = new List<BlockModel>();
             for (int i = 0; i < 5; i++)
             {
-                var origin = Vector3.Add(Vector3.Zero, new Vector3(i * 5, 0, 0));
-                vertices.AddRange(CreateCube(origin));
+                Vector3 origin = Vector3.Add(Vector3.Zero, new Vector3(i * 5, 0, 0));
+                BlockModel model = new BlockModel(Game, origin);
+
+                model.Initialize();
+                models.Add(model);
             }
-            _vertices = vertices.ToArray();
+            _models = models.ToArray();
 
             base.Initialize();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            _effect.Projection = _camera.Projection;
-            _effect.View = _camera.View;
-            _effect.World = _camera.World;
+            //_effect.Projection = _camera.Projection;
+            //_effect.View = _camera.View;
+            //_effect.World = _camera.World;
 
             RasterizerState rasterizerState = new RasterizerState();
             rasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
@@ -57,16 +60,65 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
+            foreach (BlockModel model in _models)
             {
-                pass.Apply();
-                GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length / 3);
+                model.Effect.Projection = _camera.Projection;
+                model.Effect.View = _camera.View;
+                model.Effect.World = _camera.World;
+
+                model.Draw(gameTime);
             }
 
             base.Draw(gameTime);
         }
 
         #endregion
+    }
+
+    sealed class BlockModel
+    {
+        #region Fields
+
+        private VertexPositionColor[] _vertices;
+        private Vector3 _origin;
+
+        private BasicEffect _effect;
+        private Game _game;
+        private ICamera _camera;
+
+        #endregion
+
+        #region Properties
+
+        public BasicEffect Effect { get { return _effect; } }
+
+        #endregion
+
+        public BlockModel(Game game, Vector3 origin)
+        {
+            _game = game;
+            _origin = origin;
+        }
+
+        public void Initialize()
+        {
+            _camera = _game.Services.GetService<ICamera>();
+            _vertices = CreateCube(_origin);
+
+            _effect = new BasicEffect(_game.GraphicsDevice)
+            {
+                VertexColorEnabled = true
+            };
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                _game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length / 3);
+            }
+        }
 
         #region Private Methods
 
