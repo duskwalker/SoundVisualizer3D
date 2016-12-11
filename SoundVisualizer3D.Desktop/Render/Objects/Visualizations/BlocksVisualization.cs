@@ -24,6 +24,11 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 
         #region DrawableGameComponent Implementations
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
         public override void Initialize()
         {
             _camera = Game.Services.GetService<ICamera>();
@@ -46,6 +51,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             }
 
             base.Initialize();
+
+            _camera.SetPosition(new Vector3(0.0f, 0.0f, 5.0f));
         }
 
         public override void Draw(GameTime gameTime)

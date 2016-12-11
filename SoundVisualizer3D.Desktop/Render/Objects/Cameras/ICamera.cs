@@ -10,5 +10,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
         Matrix World { get; }
 
         Vector3 Position { get; }
+
+        void SetPosition(Vector3 vector3);
     }
 }

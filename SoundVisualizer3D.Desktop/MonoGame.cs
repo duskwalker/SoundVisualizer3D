@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
-using SoundVisualizer3D.Desktop.Render.Objects.UI;
 using SoundVisualizer3D.Desktop.Render.Objects.Visualizations;
 using SoundVisualizer3D.Desktop.Render.Screen;
 

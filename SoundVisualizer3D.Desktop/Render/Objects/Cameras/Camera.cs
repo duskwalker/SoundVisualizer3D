@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
@@ -138,6 +139,11 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
 
             // Set up the world matrix.
             World = Matrix.CreateWorld(Position, Vector3.Forward, Vector3.Up);
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            _position = position;
         }
 
         #endregion
