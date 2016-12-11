@@ -30,7 +30,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             _soundSource = Game.Services.GetService<SoundSource>();
 
             var models = new HashSet<BlockModel>();
-            for (int ident = 0; ident < _soundSource.CurrentFrequencesBandValues.Length; ident++)
+            for (int ident = 0; ident < _soundSource.FrequencesBandWidth; ident++)
             {
                 Vector3 origin = Vector3.Add(Vector3.Zero, new Vector3(ident * 2.0f, 0, 0));
                 BlockModel model = new BlockModel(Game, ident, origin);

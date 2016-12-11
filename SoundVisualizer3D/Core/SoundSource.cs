@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Un4seen.Bass;
+using Un4seen.Bass.AddOn.Tags;
 using System.Timers;
 
 namespace SoundVisualizer3D
@@ -60,16 +61,26 @@ namespace SoundVisualizer3D
             if (_handle != 0)
             {
                 Stop();
+                _currentPosition = 0;
+                OnTrackPositionProgressChanged(new TrackPositionProgrressChangedEventHandlerArgs()
+                {
+                    PositionSeconds = _currentPosition
+                });
             }
 
             _handle = Bass.BASS_StreamCreateFile(fileName, 0, 0, BASSFlag.BASS_DEFAULT);
             if (_handle != 0)
             {
                 CurrentTrackLength = GetTrackLength();
+                TAG_INFO tagInfo = BassTags.BASS_TAG_GetFromFile(fileName);
                 OnTrackChanged(new TrackChangedEventHandlerArgs()
                 {
                     TrackLength = CurrentTrackLength,
-                    Title = string.Join(" | ", Bass.BASS_ChannelGetTags(_handle, BASSTag.BASS_TAG_ID3))
+                    Title = tagInfo.title,
+                    Album = tagInfo.album,
+                    Artist = tagInfo.artist,
+                    Image = tagInfo.PictureCount > 0 ? tagInfo.PictureGetImage(0): null,
+                    Year = tagInfo.year
                 });
                 Bass.BASS_ChannelSetAttribute(_handle, BASSAttribute.BASS_ATTRIB_VOL, vol / 100f);
                 Bass.BASS_ChannelPlay(_handle, false);

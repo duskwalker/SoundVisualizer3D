@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,6 +21,8 @@ namespace SoundVisualizer3D.ViewModels
         public ICommand OnPlayCommand { get; }
         public ICommand OnStopCommand { get; }
         public int TrackLength { get; set; }
+        public Image Image { get; set; }
+        public string SongInfo { get; set; }    
 
         public int CurrentPosition
         {
@@ -63,11 +66,16 @@ namespace SoundVisualizer3D.ViewModels
         private void SoundSourceOnTrackChanged(object sender, TrackChangedEventHandlerArgs args)
         {
             TrackLength = args.TrackLength;
+            Image = args.Image;
+            SongInfo = args.Artist + " - " + args.Title;
             OnPropertyChanged(nameof(TrackLength));
+            OnPropertyChanged(nameof(Image));
+            OnPropertyChanged(nameof(SongInfo));
         }
 
         public void Play()
         {
+            CurrentPosition = 0;
             if (!string.IsNullOrEmpty(SelectedFile))
             {
                 _soundSource.Play(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Audio", SelectedFile));
@@ -77,6 +85,7 @@ namespace SoundVisualizer3D.ViewModels
         public void Stop()
         {
             _soundSource.Stop();
+            CurrentPosition = 0;
         }
 
        private List<string> GetAudioFiles()
