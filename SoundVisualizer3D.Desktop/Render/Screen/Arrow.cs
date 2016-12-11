@@ -28,17 +28,18 @@ namespace SoundVisualizer3D.Desktop.Render.Screen
 
         #endregion
 
-        public Arrow(Game game)
-            : base(game) { }
+        public Arrow(Game game, bool drawMainAxis = true, bool drawScreenAxis = true)
+            : base(game)
+        {
+            _mainAxis = drawMainAxis;
+            _screenAxis = drawScreenAxis;
+        }
 
         #region DrawableGameComponent Implementations
 
         public override void Initialize()
         {
             _camera = Game.Services.GetService<ICamera>();
-
-            _screenAxis = true;
-            _mainAxis = true;
 
             _resolution = 1;
             _scale = 10;

@@ -25,7 +25,7 @@ namespace SoundVisualizer3D.Desktop
 
             Components.Add(new BlocksVisualization(this));
             Components.Add(new Camera(this, false));
-            Components.Add(new Arrow(this));
+            Components.Add(new Arrow(this, false));
             Components.Add(new Hud(this));
 
             Services.AddService(soundSource);

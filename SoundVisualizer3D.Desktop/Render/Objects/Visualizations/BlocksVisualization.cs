@@ -32,7 +32,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             var models = new HashSet<BlockModel>();
             for (int ident = 0; ident < _soundSource.CurrentFrequencesBandValues.Length; ident++)
             {
-                Vector3 origin = Vector3.Add(Vector3.Zero, new Vector3(ident * 5, 0, 0));
+                Vector3 origin = Vector3.Add(Vector3.Zero, new Vector3(ident * 2.0f, 0, 0));
                 BlockModel model = new BlockModel(Game, ident, origin);
 
                 models.Add(model);
@@ -74,12 +74,13 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
     }
 
     sealed class BlockModel
+        : ScreenObject
     {
         #region Consts
 
-        private const float Scale = 50.0f;
-        private const float Min = -10.0f;
-        private const float Max = 10.0f;
+        private const float Scale = 10.0f;
+        private const float Min = -1.0f;
+        private const float Max = 1.0f;
 
         #endregion
 
@@ -93,6 +94,8 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
         private ICamera _camera;
         private SoundSource _soundSource;
         private int _ident;
+        private SpriteBatch _spriteBatch;
+        private SpriteFont _font;
 
         #endregion
 
@@ -104,6 +107,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
         #endregion
 
         public BlockModel(Game game, int ident, Vector3 origin)
+            : base(game)
         {
             _game = game;
             _ident = ident;
@@ -118,9 +122,11 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             {
                 VertexColorEnabled = true
             };
+            
+            _spriteBatch = new SpriteBatch(game.GraphicsDevice);
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
             {
@@ -133,13 +139,15 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
         {
             float fft = MathHelper.Clamp(_soundSource.CurrentFrequencesBandValues[_ident], Min, Max) * Scale;
 
-            return Matrix.CreateScale(1f, fft, 1f) * _camera.World;
+            return Matrix.CreateScale(1.0f, fft, 1.0f) * _camera.World;
         }
 
         #region Private Methods
 
         private VertexPositionColor[] CreateCube(Vector3 origin)
         {
+            Vector3 scale = new Vector3(0.01f, 1.0f, 0.04f);
+
             Color frontSurfaceColor = ColorUtils.GenerateRandomColor(Color.WhiteSmoke);
             Color backSurfaceColor = ColorUtils.GenerateRandomColor(Color.WhiteSmoke);
             Color leftSurfaceColor = ColorUtils.GenerateRandomColor(Color.WhiteSmoke);
@@ -150,52 +158,52 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
             return new VertexPositionColor[36]
             {
                 // Front Surface
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)), frontSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)), frontSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)), frontSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)), frontSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)), frontSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)), frontSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)) * scale, frontSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)) * scale, frontSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)) * scale, frontSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)) * scale, frontSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)) * scale, frontSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)) * scale, frontSurfaceColor),
 
                 // Back Surface
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)), backSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)), backSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)), backSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)), backSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)), backSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)), backSurfaceColor), 
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)) * scale, backSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)) * scale, backSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)) * scale, backSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)) * scale, backSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)) * scale, backSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)) * scale, backSurfaceColor), 
 
                 // Left Surface
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)), leftSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)), leftSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)), leftSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)), leftSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)), leftSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)), leftSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)) * scale, leftSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)) * scale, leftSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)) * scale, leftSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)) * scale, leftSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)) * scale, leftSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)) * scale, leftSurfaceColor),
 
                 // Right Surface
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)), rightSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)), rightSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)), rightSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)), rightSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)), rightSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)), rightSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)) * scale, rightSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)) * scale, rightSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)) * scale, rightSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)) * scale, rightSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)) * scale, rightSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)) * scale, rightSurfaceColor),
 
                 // Top Surface
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)), topSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)), topSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)), topSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)), topSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)), topSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)), topSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, 1.0f)) * scale, topSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)) * scale, topSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)) * scale, topSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, 1.0f)) * scale, topSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, 1.0f, -1.0f)) * scale, topSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, 1.0f, -1.0f)) * scale, topSurfaceColor),
 
                 // Bottom Surface
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)), bottomSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)), bottomSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)), bottomSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)), bottomSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)), bottomSurfaceColor),
-                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)), bottomSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, -1.0f)) * scale, bottomSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)) * scale, bottomSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)) * scale, bottomSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, -1.0f)) * scale, bottomSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(-1.0f, -1.0f, 1.0f)) * scale, bottomSurfaceColor),
+                new VertexPositionColor(Vector3.Add(origin, new Vector3(1.0f, -1.0f, 1.0f)) * scale, bottomSurfaceColor),
             };
         }
 
