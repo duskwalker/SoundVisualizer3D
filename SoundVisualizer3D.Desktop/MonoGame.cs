@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
+using SoundVisualizer3D.Desktop.Render.Objects.UI;
 using SoundVisualizer3D.Desktop.Render.Objects.Visualizations;
 using SoundVisualizer3D.Desktop.Render.Screen;
 
@@ -23,6 +25,8 @@ namespace SoundVisualizer3D.Desktop
                 IsFullScreen = false
             };
 
+            IsMouseVisible = true;
+
             Components.Add(new BlocksVisualization(this));
             Components.Add(new Camera(this, false));
             Components.Add(new Arrow(this, false));
@@ -37,7 +41,14 @@ namespace SoundVisualizer3D.Desktop
 
         protected override void Initialize()
         {
+            TouchPanel.EnabledGestures = GestureType.Tap;
+
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
