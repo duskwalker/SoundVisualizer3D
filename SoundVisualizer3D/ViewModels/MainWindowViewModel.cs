@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Media;
 using Prism.Commands;
 using SoundVisualizer3D.Properties;
+using System.Windows.Media.Imaging;
 
 namespace SoundVisualizer3D.ViewModels
 {
@@ -16,12 +19,18 @@ namespace SoundVisualizer3D.ViewModels
     {
         private int _currentPosition;
         private readonly SoundSource _soundSource;
+        private ImageSource _image;
 
         public float[] FrequenciesValues { get; set; }
         public ICommand OnPlayCommand { get; }
         public ICommand OnStopCommand { get; }
         public int TrackLength { get; set; }
-        public Image Image { get; set; }
+
+        public ImageSource Image
+        {
+            get { return _image; }
+        }
+
         public string SongInfo { get; set; }    
 
         public int CurrentPosition
@@ -66,12 +75,30 @@ namespace SoundVisualizer3D.ViewModels
         private void SoundSourceOnTrackChanged(object sender, TrackChangedEventHandlerArgs args)
         {
             TrackLength = args.TrackLength;
-            Image = args.Image;
+            _image = CreateImageSource(args.Image);
             SongInfo = args.Artist + " - " + args.Title;
             OnPropertyChanged(nameof(TrackLength));
             OnPropertyChanged(nameof(Image));
             OnPropertyChanged(nameof(SongInfo));
         }
+
+        private ImageSource CreateImageSource(Image image)
+        {
+            if (image == null)
+            {
+                return null;
+            }
+            MemoryStream stream = new MemoryStream();
+            image.Save(stream,ImageFormat.Png);
+            stream.Seek(0, SeekOrigin.Begin);
+            BitmapImage imageSource = new BitmapImage();
+            imageSource.BeginInit();    
+            imageSource.StreamSource = stream;
+            imageSource.CacheOption = BitmapCacheOption.OnLoad;
+            imageSource.EndInit();
+            return imageSource;
+        }
+
 
         public void Play()
         {
