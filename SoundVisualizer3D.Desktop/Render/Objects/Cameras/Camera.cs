@@ -28,6 +28,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
         // Set distance from the camera of the near and far clipping planes.
         private const float _nearClip = 1.0f;
         private const float _farClip = 2000.0f;
+        private bool _captureMouse;
 
         #endregion
 
@@ -39,9 +40,11 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
 
         #endregion
 
-        public Camera(Game game)
+        public Camera(Game game, bool captureMouse = true)
             : base(game)
         {
+            _captureMouse = captureMouse;
+
             Game.Services.AddService<ICamera>(this);
         }
 
@@ -52,7 +55,7 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
             UpdatePosition();
             UpdateCamera();
 
-            if (Game.IsActive)
+            if (Game.IsActive && _captureMouse)
             {
                 Mouse.SetPosition(Game.Window.ClientBounds.X / 2, Game.Window.ClientBounds.Y / 2);
             }
