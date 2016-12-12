@@ -8,12 +8,28 @@
                       Title="SoundVisualizer3D" Height="700" Width="1280">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="110"></RowDefinition>
         </Grid.RowDefinitions>
-
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" FontSize="8" Margin="1,0,0,0">L</TextBlock>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="8"  Margin="0,0,0,1">R</TextBlock>
+            <Rectangle Grid.Column ="0" Height="8"
+                               Width="{Binding LeftChannelLevel}"
+                               Fill="CornflowerBlue"
+                               Margin="0,1,1,1" HorizontalAlignment="Right"></Rectangle>
+            <Rectangle Grid.Column ="1" Height="8"
+                               Width="{Binding RightChannelLevel}"
+                               Fill="CornflowerBlue"
+                               Margin="1,1,0,1" HorizontalAlignment="Left"></Rectangle>
+        </Grid>
         <ItemsControl Margin="0,0,0,5"
-                      Grid.Row="0"
+                      Grid.Row="1"
                       VerticalAlignment="Bottom"
                       ItemsSource="{Binding FrequenciesValues}">
 
@@ -34,8 +50,8 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-       
-        <Grid Grid.Row="1" Height="100">
+
+        <Grid Grid.Row="2" Height="110">
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"></RowDefinition>
                 <RowDefinition Height="35"></RowDefinition>
@@ -46,34 +62,36 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
-                <Image Width="75" Height="75" Source="{Binding Image}"></Image>
-                <ListView 
-                      Height="75"
-                      Width="600"
+            <ListView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                      Height="110"
+                      Width="800"
                       ItemsSource="{Binding Files}" 
                       HorizontalAlignment="Left"
                       Margin="5,1,5,1"
                       SelectedItem="{Binding SelectedFile}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding SongInfo}"></TextBlock>
-            <Slider Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Image Grid.Column="1" Grid.Row="0" Width="75" Height="75" HorizontalAlignment="Left" Source="{Binding Image}"></Image>
+
+            <Slider Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="3"
                     Value="{Binding CurrentPosition, Mode=TwoWay}"
                     Maximum="{Binding TrackLength}"
                     Width="350"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Margin="5,0,5,0" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,0,0,0"  Text="{Binding SongInfo}"></TextBlock>
+            <StackPanel Grid.Column="4" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
 
-            <Button Grid.Column="2" Grid.Row="1" Content="Play" Height="30" Width="100" Margin="1" Command="{Binding OnPlayCommand}" />
-            <Button Grid.Column="3" Grid.Row="1" Content="Stop" Height="30" Width="100" Margin="1" Command="{Binding OnStopCommand}" />
+                <Button  Content="Play" Height="30" Width="100" Margin="1" Command="{Binding OnPlayCommand}" />
+                <Button  Content="Stop" Height="30" Width="100" Margin="1" Command="{Binding OnStopCommand}" />
+            </StackPanel>
         </Grid>
     </Grid>
 

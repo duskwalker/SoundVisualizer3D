@@ -39,6 +39,9 @@ namespace SoundVisualizer3D.ViewModels
             set { _soundSource.SetPosition(value); }
         }
 
+        public int LeftChannelLevel { get; private set; }
+        public int RightChannelLevel { get; private set; }
+
         public List<string> Files
         {
             get
@@ -55,9 +58,19 @@ namespace SoundVisualizer3D.ViewModels
            _soundSource.TrackPositionProgressChanged += SoundSourceOnTrackPositionProgressChanged;
             _soundSource.TrackChanged += SoundSourceOnTrackChanged;
             _soundSource.FrequencesBandChanged += SoundSourceOnFrequencesBandChanged;
+            _soundSource.ChannelVolumeInfoChanged += SoundSourceOnChannelVolumeInfoChanged;
 
             OnPlayCommand = new DelegateCommand(Play);
             OnStopCommand = new DelegateCommand(Stop);           
+        }
+
+        private void SoundSourceOnChannelVolumeInfoChanged(object sender, ChannelVolumeInfoChangedEventHandlerArgs args)
+        {
+            LeftChannelLevel = args.LeftChannelVolume/70;
+            RightChannelLevel = args.RightChannelValue/70;
+            OnPropertyChanged(nameof(LeftChannelLevel));
+            OnPropertyChanged(nameof(RightChannelLevel));
+
         }
 
         private void SoundSourceOnTrackPositionProgressChanged(object sender, TrackPositionProgrressChangedEventHandlerArgs args)

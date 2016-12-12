@@ -22,6 +22,7 @@ namespace SoundVisualizer3D
         public event TrackChangedEventHandler TrackChanged;
         public event FrequencesBandChangedEventHandler FrequencesBandChanged;
         public event TrackPositionProgrressChangedEventHandler TrackPositionProgressChanged;
+        public event ChannelVolumeInfoChangedEventHandler ChannelVolumeInfoChanged;
 
         //Provides track length in seconds
         public int CurrentTrackLength { get; set; }
@@ -30,6 +31,10 @@ namespace SoundVisualizer3D
         {
             get { return _frequenciesValues.Length; }
         }
+
+        public int LeftChannelValue { get; private set; }
+
+        public int RightChannelValue { get; private set; }   
 
         public float[] CurrentFrequencesBandValues
         {
@@ -117,7 +122,17 @@ namespace SoundVisualizer3D
                 { FrequencesBand = _frequenciesValues.Select(f => f * 1000).ToArray() });
 
                 long bytePosition = Bass.BASS_ChannelGetPosition(_handle);
+
+                int level = Bass.BASS_ChannelGetLevel(_handle); ;
+                LeftChannelValue = Utils.LowWord32(level); // the left level
+                RightChannelValue = Utils.HighWord32(level); // the right level
                
+                OnChannelVolumeInfoChanged(new ChannelVolumeInfoChangedEventHandlerArgs()
+                {
+                    RightChannelValue = RightChannelValue,
+                    LeftChannelVolume = LeftChannelValue
+                });
+
                 int position = (int)Bass.BASS_ChannelBytes2Seconds(_handle, bytePosition);
                 if (_currentPosition < position)
                 {
@@ -145,10 +160,25 @@ namespace SoundVisualizer3D
             TrackPositionProgressChanged?.Invoke(this, args);
         }
 
+        protected virtual void OnChannelVolumeInfoChanged(ChannelVolumeInfoChangedEventHandlerArgs args)
+        {
+            ChannelVolumeInfoChanged?.Invoke(this, args);
+        }
+
         public void Dispose()
         {
             _timer.Elapsed -= TimerOnElapsed;
             Bass.BASS_Free();
         }
+
+    }
+
+    public delegate void ChannelVolumeInfoChangedEventHandler(object sender, ChannelVolumeInfoChangedEventHandlerArgs args);
+
+    public class ChannelVolumeInfoChangedEventHandlerArgs
+        : EventArgs
+    {
+        public int LeftChannelVolume { get; set; }
+        public int RightChannelValue { get; set; }
     }
 }
