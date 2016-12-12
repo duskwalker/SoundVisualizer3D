@@ -2,9 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using SoundVisualizer3D.Desktop.Render;
 using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
 using SoundVisualizer3D.Desktop.Render.Objects.Visualizations;
 using SoundVisualizer3D.Desktop.Render.Screen;
+using SoundVisualizer3D.Desktop.Render.Screen.UI;
+using System;
+using System.IO;
 
 namespace SoundVisualizer3D.Desktop
 {
@@ -21,7 +25,9 @@ namespace SoundVisualizer3D.Desktop
         {
             _graphics = new GraphicsDeviceManager(this)
             {
-                IsFullScreen = false
+                IsFullScreen = false,
+                PreferredBackBufferWidth = 1024,
+                PreferredBackBufferHeight = 768
             };
 
             IsMouseVisible = true;
@@ -30,6 +36,18 @@ namespace SoundVisualizer3D.Desktop
             Components.Add(new Camera(this, false));
             Components.Add(new Arrow(this, false));
             Components.Add(new Hud(this));
+            
+            Components.Add(new Button(this, @"Buttons\play",
+                new Rectangle(120, 20, 90, 90), ScreenAllocation.TopRight,
+                    () =>
+                    {
+                        string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\Kalimba.mp3");
+                        if (File.Exists(fileName))
+                        {
+                            soundSource.Play(fileName, 50);
+                        }
+
+                    }));
 
             Services.AddService(soundSource);
 
@@ -40,7 +58,7 @@ namespace SoundVisualizer3D.Desktop
 
         protected override void Initialize()
         {
-            TouchPanel.EnabledGestures = GestureType.Tap;
+            TouchPanel.EnabledGestures = GestureType.Tap | GestureType.DoubleTap | GestureType.Hold;
 
             base.Initialize();
         }

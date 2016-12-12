@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
 using System.Collections.Generic;
 using SoundVisualizer3D.Desktop.Utils;
-using System.IO;
-using System;
 
 namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
 {
@@ -43,12 +41,6 @@ namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
                 models.Add(model);
             }
             _models = models;
-
-            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Audio\Kalimba.mp3");
-            if (File.Exists(fileName))
-            {
-                _soundSource.Play(fileName, 50);
-            }
 
             base.Initialize();
 

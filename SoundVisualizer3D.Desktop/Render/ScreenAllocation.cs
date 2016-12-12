@@ -10,6 +10,6 @@ namespace SoundVisualizer3D.Desktop.Render
         Bottom,
         BottomLeft,
         Left,
-        TopLeft,
+        TopLeft
     }
 }
