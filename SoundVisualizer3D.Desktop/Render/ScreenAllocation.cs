@@ -1,5 +1,5 @@
 ﻿
-namespace SoundVisualizer3D.Desktop.Render
+namespace SoundVisualizer3D.MonoGame.Render
 {
     enum ScreenAllocation
     {

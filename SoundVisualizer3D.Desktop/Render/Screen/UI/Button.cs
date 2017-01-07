@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SoundVisualizer3D.Desktop.Render.Screen.UI
+namespace SoundVisualizer3D.MonoGame.Render.Screen.UI
 {
     sealed class Button
         : ClickableBase

@@ -1,15 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace SoundVisualizer3D.Desktop.Utils
+namespace SoundVisualizer3D.MonoGame.Utils
 {
     static class ColorUtils
     {
-        private static readonly Random _random;
+        private static readonly Random Random;
 
         static ColorUtils()
         {
-            _random = new Random();
+            Random = new Random();
         }
 
         /// <summary>
@@ -17,16 +17,13 @@ namespace SoundVisualizer3D.Desktop.Utils
         /// </summary>
         public static Color GenerateRandomColor(Color mix)
         {
-            int red = _random.Next(256);
-            int green = _random.Next(256);
-            int blue = _random.Next(256);
+            int red = Random.Next(256);
+            int green = Random.Next(256);
+            int blue = Random.Next(256);
 
-            if (mix != null)
-            {
-                red = (red + mix.R) / 2;
-                green = (green + mix.G) / 2;
-                blue = (blue + mix.B) / 2;
-            }
+            red = (red + mix.R) / 2;
+            green = (green + mix.G) / 2;
+            blue = (blue + mix.B) / 2;
 
             Color color = new Color(red, green, blue);
             return color;
@@ -37,7 +34,7 @@ namespace SoundVisualizer3D.Desktop.Utils
         /// </summary>
         public static Color GenerateRandomBrushColour()
         {
-            return new Color(0, _random.Next(128, 256), _random.Next(128, 256));
+            return new Color(0, Random.Next(128, 256), Random.Next(128, 256));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
+namespace SoundVisualizer3D.MonoGame.Render.Objects.Cameras
 {
     interface ICamera
         : IGameComponent

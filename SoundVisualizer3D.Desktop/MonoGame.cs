@@ -1,16 +1,16 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.IO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using SoundVisualizer3D.Desktop.Render;
-using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
-using SoundVisualizer3D.Desktop.Render.Objects.Visualizations;
-using SoundVisualizer3D.Desktop.Render.Screen;
-using SoundVisualizer3D.Desktop.Render.Screen.UI;
-using System;
-using System.IO;
+using SoundVisualizer3D.MonoGame.Render;
+using SoundVisualizer3D.MonoGame.Render.Objects.Cameras;
+using SoundVisualizer3D.MonoGame.Render.Objects.Visualizations;
+using SoundVisualizer3D.MonoGame.Render.Screen;
+using SoundVisualizer3D.MonoGame.Render.Screen.UI;
 
-namespace SoundVisualizer3D.Desktop
+namespace SoundVisualizer3D.MonoGame
 {
     sealed class MonoGame
         : Game

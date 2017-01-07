@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
+using SoundVisualizer3D.MonoGame.Render.Objects.Cameras;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
+namespace SoundVisualizer3D.MonoGame.Render.Objects.Visualizations
 {
     sealed class TestVisualization
         : DrawableGameComponent

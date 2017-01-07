@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects.Cameras
+namespace SoundVisualizer3D.MonoGame.Render.Objects.Cameras
 {
     sealed class Camera
         : SceneObject

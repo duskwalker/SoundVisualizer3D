@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
+using SoundVisualizer3D.MonoGame.Render.Objects.Cameras;
 
-namespace SoundVisualizer3D.Desktop.Render.Screen
+namespace SoundVisualizer3D.MonoGame.Render.Screen
 {
     sealed class Hud
         : ScreenObject

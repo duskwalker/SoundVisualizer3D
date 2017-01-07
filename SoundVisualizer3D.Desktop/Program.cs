@@ -1,6 +1,6 @@
 ﻿using Ninject;
 
-namespace SoundVisualizer3D.Desktop
+namespace SoundVisualizer3D.MonoGame
 {
     class Program
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{DAF9BBAB-AE20-440E-8BEE-3D021082DB68}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoundVisualizer3D.Desktop</RootNamespace>
-    <AssemblyName>SoundVisualizer3D.Desktop</AssemblyName>
+    <RootNamespace>SoundVisualizer3D.MonoGame</RootNamespace>
+    <AssemblyName>SoundVisualizer3D.MonoGame</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

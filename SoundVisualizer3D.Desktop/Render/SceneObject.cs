@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SoundVisualizer3D.Desktop.Render
+namespace SoundVisualizer3D.MonoGame.Render
 {
     abstract class SceneObject
         : DrawableGameComponent

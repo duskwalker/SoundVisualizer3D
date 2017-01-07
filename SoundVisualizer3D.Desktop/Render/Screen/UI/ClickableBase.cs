@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using System;
-using System.Linq;
 
-namespace SoundVisualizer3D.Desktop.Render.Screen.UI
+namespace SoundVisualizer3D.MonoGame.Render.Screen.UI
 {
     abstract class ClickableBase
         : ScreenObject

@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
-using System;
+﻿using System;
 using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SoundVisualizer3D.MonoGame.Render.Objects.Cameras;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
+namespace SoundVisualizer3D.MonoGame.Render.Objects.Visualizations
 {
     sealed class WaveformVisualization
         : DrawableGameComponent

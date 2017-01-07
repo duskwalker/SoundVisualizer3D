@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SoundVisualizer3D.Desktop.Render.Objects.Cameras;
-using System.Collections.Generic;
-using SoundVisualizer3D.Desktop.Utils;
+using SoundVisualizer3D.MonoGame.Render.Objects.Cameras;
+using SoundVisualizer3D.MonoGame.Utils;
 
-namespace SoundVisualizer3D.Desktop.Render.Objects.Visualizations
+namespace SoundVisualizer3D.MonoGame.Render.Objects.Visualizations
 {
     sealed class BlocksVisualization
         : SceneObject

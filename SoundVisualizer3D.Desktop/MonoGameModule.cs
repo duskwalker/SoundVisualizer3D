@@ -1,7 +1,6 @@
 ﻿using Ninject.Modules;
-using SoundVisualizer3D.Desktop.Render;
 
-namespace SoundVisualizer3D.Desktop
+namespace SoundVisualizer3D.MonoGame
 {
     public sealed class MonoGameModule
         : NinjectModule
