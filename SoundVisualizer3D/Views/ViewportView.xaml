@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="SoundVisualizer3D.Views.ViewportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Viewport3D Margin="0,0,0,5"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch">
+        <Viewport3D.Camera>
+            <PerspectiveCamera Position="{Binding Path=Position}"
+                               LookDirection="{Binding Path=LookDirection}" 
+                               UpDirection="{Binding Path=UpDirection}" />
+        </Viewport3D.Camera>
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <Model3DGroup>
+                    <DirectionalLight Color="White"
+                                      Direction="-1,-1,-3" />
+                    <GeometryModel3D>
+                        <GeometryModel3D.Geometry>
+                            <MeshGeometry3D Positions="{Binding Path=Positions}"
+                                            TriangleIndices="{Binding Path=TriangleIndices}"/>
+                        </GeometryModel3D.Geometry>
+                        <GeometryModel3D.Material>
+                            <DiffuseMaterial Brush="Red"/>
+                        </GeometryModel3D.Material>
+                    </GeometryModel3D>
+                </Model3DGroup>
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+    </Viewport3D>
+
+    <!--<Viewport3D>
+        <Viewport3D.Camera>
+            <PerspectiveCamera x:Name="Camera"
+                               Position="{Binding Camera.Position}"
+                               LookDirection="{Binding Camera.LookDirection}"
+                               UpDirection="{Binding Camera.UpDirection}" />
+
+        </Viewport3D.Camera>
+
+        <ModelUIElement3D x:Name="Model">
+            <ModelUIElement3D.Model>
+                <GeometryModel3D Geometry="{Binding Path=Mesh.Geometry}">
+                    <GeometryModel3D.Material>
+                        <DiffuseMaterial Brush="LightGray" />
+                    </GeometryModel3D.Material>
+                </GeometryModel3D>
+            </ModelUIElement3D.Model>
+        </ModelUIElement3D>
+
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <PointLight Color="White"
+                            Position="9, 12, 10" />
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+
+        <ModelVisual3D>
+            <ModelVisual3D.Content>
+                <PointLight Color="White"
+                            Position="-10, -12, -8" />
+            </ModelVisual3D.Content>
+        </ModelVisual3D>
+    </Viewport3D>-->
+
+</UserControl>
